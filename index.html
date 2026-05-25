@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>王璐 | 个人主页 - Product Manager</title>
+    <style>
+        /* ==========================================================================
+        
+           1. 全局设计系统
+           ========================================================================== */
+        :root {
+            --primary-color: #000000;
+            --purple-accent: #7C3AED;
+            --bg-color: #FFFFFF;
+            --text-main: #0F172A;
+            --text-muted: #0F172A;
+            --border-color: #E2E8F0;
+            --bar-color: #fdf9ee; /* 帮你补上了这里的冒号 */
+            --border-radius-pill: 9999px;
+            --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+            /* 莫兰迪色系 */
+            --morandi-green: #D6DFCE;
+            --morandi-green-deep: #8FA585;
+            --morandi-green-dark: #3F5A45;
+            --morandi-purple: #C4B5C9;
+            --morandi-purple-deep: #9A87A1;
+            --morandi-purple-dark: #4E3F5A;
+            --morandi-blue: #C9D3DC;
+            --morandi-blue-deep: #8FA0AE;
+            --morandi-blue-dark: #2F4459;
+            --return-green: #4F9E73;
+        }
+
+        /* 全局其他样式保持不变... */
+
+        /* ==========================================================================
+           2. 导航栏
+           ========================================================================== */
+        .navbar {
+            position: fixed;
+            top: 12px; left: 20px; right: 20px;
+            height: 75px;
+            
+            /* 添加毛玻璃背景以防止与下方文字重叠 */
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+            
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            z-index: 1000;
+        }
+
+        .nav-logo {
+            font-size: 20px;
+            font-weight: 800;
+            color: #000000;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-menu { display: flex; gap: 8px; list-style: none; }
+
+        .nav-item a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 22px;
+    border-radius: var(--border-radius-pill);
+    transition: var(--transition-smooth);
+    cursor: pointer;
+    display: inline-block;
+    background: transparent;
+}
+
+/* 当前停留页面的 tab 始终是黑色 */
+.nav-item.active a {
+    color: #FFFFFF !important;
+    background: #000000 !important;
+}
+
+/* 非当前页面的 tab 鼠标悬浮时柔和高亮，不抢走激活态 */
+.nav-item:not(.active) a:hover {
+    color: var(--text-main);
+    background: #F1F5F9;
+}
+
+        /* ==========================================================================
+           3. 主体布局
+           ========================================================================== */
+        .main-content {
+            margin-top: 95px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px;
+            max-width: 1100px;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .content-panel {
+            width: 100%;
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        .content-panel.active-panel {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==========================================================================
+           4. 关于我板块
+           ========================================================================== */
+        .about-split-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 60px;
+            padding: 40px 0;
+        }
+
+        .about-text-side { 
+            flex: 1; 
+            transform: translateY(-80px);
+    }
+
+        .about-title-black {
+            font-size: 56px;
+            font-weight: 800;
+            color: #000000;
+            line-height: 1.2;
+            margin-bottom: 14px;
+        }
+
+        .about-subtitle-purple {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--purple-accent);
+            margin-bottom: 28px;
+            letter-spacing: -0.2px;
+        }
+
+        .about-brief {
+            font-size: 18px;
+            color: #334155;
+            line-height: 1.85;
+            margin-bottom: 50px;
+        }
+
+        .cta-button-group { 
+            display: flex; 
+            gap: 60px; 
+            flex-wrap: wrap; 
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 28px;
+            font-size: 20px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-decoration: none;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary { background: #000000; color: #FFFFFF; border-color: #000000; }
+        .btn-primary:hover { background: #27272A; border-color: #27272A; }
+
+        .btn-secondary { background: #FFFFFF; color: #000000; border-color: var(--border-color); }
+        .btn-secondary:hover { background: #F8FAFC; border-color: #94A3B8; }
+
+        .about-image-side {
+            flex-shrink: 0;
+            width: 340px;
+            height: 460px;
+            position: relative;
+        }
+
+        .profile-photo-container {
+            width: 100%;
+            height: 100%;
+            border-radius: 16px;
+            background: transparent;
+            border: none;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .photo-placeholder-text {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            font-weight: 600;
+            color: #94A3B8;
+            text-align: center;
+            line-height: 1.5;
+            pointer-events: none;
+        }
+
+        /* ==========================================================================
+           5. 联系我弹窗
+           ========================================================================== */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.modal-open { opacity: 1; pointer-events: auto; }
+
+        .modal-card {
+            background: #FFFFFF;
+            border-radius: 16px;
+            width: 360px;
+            padding: 32px;
+            text-align: center;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .modal-overlay.modal-open .modal-card { transform: scale(1); }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 14px; right: 16px;
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: var(--text-muted);
+            line-height: 1;
+        }
+        .modal-close-btn:hover { color: #000000; }
+
+        .qrcode-box {
+            width: 280px;
+            min-height: 280px;
+            height: auto;
+            margin: 18px auto;
+            background: #F1F5F9;
+            border: 1px dashed #CBD5E1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #94A3B8;
+            overflow: hidden;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .qrcode-box img { width: 100%; height: auto; object-fit: contain; display: none; border-radius: 4px; }
+
+        /* ==========================================================================
+           6. 通用标题
+           ========================================================================== */
+        .section-title {
+            font-size: 40px;
+            font-weight: 800;
+            color: #000000;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
+        }
+
+        .section-subtitle {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+
+        .return-rate { color: var(--return-red); font-weight: 700; }
+
+        /* ==========================================================================
+           7. 教育背景：时间轴 + 莫兰迪卡片
+           ========================================================================== */
+        .edu-layout {
+            display: flex;
+            gap: 40px;
+            align-items: stretch;
+        }
+
+        .edu-timeline {
+            flex: 0 0 28%;
+            position: relative;
+            padding: 6px 0 6px 30px;
+            border-left: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .timeline-node {
+            position: relative;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .timeline-node:last-child { margin-bottom: 0; }
+
+        .timeline-node::before {
+            content: "";
+            position: absolute;
+            left: -38px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            background: #FFFFFF;
+            border-radius: 50%;
+            border: 2px solid #000000;
+            box-shadow: none;
+        }
+
+        .timeline-node.active-now::before {
+            background: #FFFFFF;
+            border-color: var(--purple-accent);
+        }
+
+        .timeline-node .tn-year { font-size: 18px; }
+        .timeline-node .tn-period {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+    .edu-cards { flex: 1; display: flex; flex-direction: column; gap: 24px; }
+
+        .edu-card {
+            flex: 1;
+            border-radius: 16px;
+            /* 🛠️ 第一步：把原本的 64px 缩减到 42px（数值越小，文字上移越多） */
+            padding: 42px 30px 24px 30px; 
+            color: var(--text-main);
+            position: relative;
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: left;
+        }
+        .edu-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.06); }
+
+        .edu-card.morandi-green {
+            background: var(--morandi-green);
+        }
+        .edu-card.morandi-purple {
+            background: var(--morandi-purple);
+        }
+
+        .edu-card-tag {
+            position: absolute;
+            /* 🛠️ 第二步：文字上移后，把标签也稍微往顶边缘提一点，从 20px 改为 14px */
+            top: 14px;
+            left: 22px;
+            display: inline-block;
+            background: rgba(255,255,255,0.6);
+            color: var(--text-main);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: var(--border-radius-pill);
+        }
+
+        .edu-card h3 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .edu-card .edu-major {
+            font-size: 14px;
+            font-weight: 600;
+            color: rgba(15, 23, 42, 0.75);
+            margin-bottom: 12px;
+        }
+
+        .edu-card .edu-detail {
+            font-size: 13.5px;
+            color: rgba(15, 23, 42, 0.85);
+            line-height: 1.7;
+        }
+
+        .edu-card .edu-thesis {
+            margin-top: 10px;
+            font-size: 13px;
+            color: rgba(15, 23, 42, 0.7);
+            font-style: italic;
+        }
+
+        .edu-card-corner {
+            position: absolute;
+            /* 🛠️ 第三步：同步把右边时间的高度也从 20px 改为 14px，保持水平对齐 */
+            top: 14px;
+            right: 22px;
+            display: inline-block;
+            background: rgba(255,255,255,0.6);
+            color: var(--text-main);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: var(--border-radius-pill);
+        }
+
+        /* ==========================================================================
+           8. 实习经历：时间轴左右排版（每个节点与对应卡片同行对齐）
+           ========================================================================== */
+        .exp-layout {
+            display: grid;
+            grid-template-columns: 22% 1fr;
+            column-gap: 40px;
+            row-gap: 24px;
+            align-items: start;
+            position: relative;
+        }
+
+        /* 贯穿所有节点的连续时间线 */
+        .exp-layout::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 6px;
+            bottom: 6px;
+            width: 2px;
+            background: var(--border-color);
+        }
+
+        .exp-layout > .timeline-node {
+            padding: 6px 0 0 30px;
+        }
+
+        .exp-layout > .timeline-node::before {
+            left: -5px;
+            top: 12px;
+        }
+
+        .card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 28px 28px;
+            margin-bottom: 24px;
+            box-sizing: border-box;
+            transition: var(--transition-smooth);
+        }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.06); }
+
+        .card.morandi-green { background: var(--morandi-green); border-color: transparent; }
+        .card.morandi-purple { background: var(--morandi-purple); border-color: transparent; }
+        .card.morandi-blue { background: var(--morandi-blue); border-color: transparent; }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .card-header h3 { font-size: 18px; font-weight: 700; line-height: 1.2; margin: 0; }
+
+        .sub-txt {
+            font-size: 14px;
+            color: #000;
+            font-weight: 600;
+            margin: 0 0 14px;
+        }
+
+        .date-badge {
+            font-size: 13px;
+            color: var(--text-main);
+            background: rgba(255,255,255,0.6);
+            border: none;
+            padding: 4px 14px;
+            border-radius: 6px;
+            font-weight: 700;
+        }
+
+        .biz-bg {
+            font-size: 13.5px;
+            color: var(--text-main);
+            margin: 0 12px 18px;
+            background: rgba(255,255,255,0.5);
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: none;
+            text-align: justify;
+            text-justify: inter-ideograph;
+        }
+
+        .highlight-badge {
+            display: inline-block;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            margin-right: 8px;
+        }
+        .badge-growth { background: #000; color: #FFF; }
+        .badge-pain { background: #F1F5F9; color: var(--text-main); border: 1px solid var(--border-color); }
+
+        /* 卡片彩色版本：黑色标签替换为该卡片色调的深色 */
+        .card.morandi-green .highlight-badge { background: var(--morandi-green-dark); color: #FFF; border: none; }
+        .card.morandi-purple .highlight-badge { background: var(--morandi-purple-dark); color: #FFF; border: none; }
+        .card.morandi-blue .highlight-badge { background: var(--morandi-blue-dark); color: #FFF; border: none; }
+
+        .desc-list { 
+            list-style: none; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 16px; 
+            padding: 0 20px;
+        }
+
+        .desc-item {
+            position: relative;
+            padding-left: 0;
+            font-size: 14.5px;
+            color: var(--text-main);
+            line-height: 1.75;
+            text-align: justify;
+            text-justify: inter-ideograph;
+        }
+
+        .skill-tag-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+        .skill-tag {
+            font-size: 13px;
+            background: #F8FAFC;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 6px 14px;
+            border-radius: 6px;
+        }
+
+        /* ==========================================================================
+           8.5 项目实践：卡片 + 右侧照片框
+           ========================================================================== */
+        .proj-row {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 24px;
+            align-items: stretch;
+        }
+
+        .proj-row .card {
+            margin-bottom: 0;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .proj-photo-wrap {
+            height: 100%;
+        }
+
+        .proj-photo {
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            padding: 8px;
+            background: #F1F5F9;
+            border: none;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, 0.05), 0 1px 4px rgba(15, 23, 42, 0.03);
+            transition: var(--transition-smooth);
+        }
+        .proj-photo:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08), 0 4px 10px rgba(15, 23, 42, 0.04); }
+
+        /* 三种莫兰迪色调框 */
+        .proj-photo.morandi-green { background: var(--morandi-green); }
+        .proj-photo.morandi-purple { background: var(--morandi-purple); }
+        .proj-photo.morandi-blue { background: var(--morandi-blue); }
+
+        .proj-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 6px;
+        }
+
+        .proj-photo-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            color: #94A3B8;
+            pointer-events: none;
+        }
+
+        /* 第一张图：下载报告悬浮蒙层 */
+        .proj-photo .download-overlay {
+            position: absolute;
+            inset: 8px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #FFF;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            background: rgba(15, 23, 42, 0.55);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+        .proj-photo:hover .download-overlay { opacity: 1; }
+
+        @media (max-width: 768px) {
+            .proj-row { grid-template-columns: 1fr; }
+            .proj-photo-wrap { padding-top: 0; }
+            .proj-photo { width: 100%; height: auto; aspect-ratio: 16 / 9; }
+        }
+
+        /* ==========================================================================
+           9. Explorer 翻转卡
+           ========================================================================== */
+        .explorer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .explorer-title {
+            font-family: "Georgia", "Times New Roman", "Songti SC", serif;
+            font-style: italic;
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -1px;
+        }
+        .explorer-title .line-share { display: block; color: #000; }
+        .explorer-title .line-life { display: block; color: #2563EB; }
+
+        .explorer-tagline {
+            font-family: "Georgia", "Times New Roman", serif;
+            font-style: italic;
+            font-size: 18px;
+            color: var(--text-muted);
+            font-weight: 500;
+            padding-bottom: 10px;
+        }
+
+        .flip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 28px;
+        }
+
+        .flip-card {
+            perspective: 1200px;
+            height: 360px;
+            cursor: pointer;
+        }
+
+        /* ==========================================================================
+           留言区
+           ========================================================================== */
+        .leave-message {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .leave-message-title {
+            font-size: 30px;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 14px;
+        }
+
+        .message-row {
+            display: flex;
+            gap: 62px;
+            align-items: stretch;
+        }
+
+        .message-input {
+            flex: 0 1 70%;
+            min-height: 56px;
+            max-height: 180px;
+            padding: 16px 18px;
+            font-size: 14.5px;
+            font-family: inherit;
+            color: var(--text-main);
+            background: #F8FAFC;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            resize: vertical;
+            transition: var(--transition-smooth);
+            line-height: 1.6;
+        }
+
+        .message-input::placeholder { color: #94A3B8; }
+
+        .message-input:focus {
+            outline: none;
+            border-color: #000;
+            background: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(0,0,0,0.04);
+        }
+
+        .message-send-btn {
+            flex: 0 0 auto;
+            min-width: 140px;
+            padding: 0 40px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #FFF;
+            background: #000;
+            border: 1px solid #000;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;       /* 这让文字在【垂直方向】居中 */
+            justify-content: center;   /* ✨ 新增这行：让文字在【水平方向】居中 */
+            gap: 8px;
+        }
+
+        .message-send-btn:hover { background: #27272A; }
+        .message-send-btn:disabled {
+            background: #CBD5E1;
+            border-color: #CBD5E1;
+            cursor: not-allowed;
+        }
+
+        .message-hint {
+            margin-top: 10px;
+            font-size: 15px;
+            color: var(--text-muted);
+        }
+        .message-hint a { color: var(--text-muted); text-decoration: underline; }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+
+        .flip-face {
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: #FFFFFF;
+        }
+
+        .flip-front {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .flip-photo {
+            flex: 1;
+            background: linear-gradient(135deg, #F1F5F9 0%, #E2E8F0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            color: #94A3B8;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .flip-caption {
+            padding: 16px 18px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #000;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            background: #FFFFFF;
+        }
+
+        .flip-back {
+            transform: rotateY(180deg);
+            background: #0F172A;
+            color: #F1F5F9;
+            padding: 24px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 13.5px;
+            line-height: 1.85;
+            border: 1px solid #0F172A;
+        }
+        .flip-back p { font-style: italic; }
+
+        /* ==========================================================================
+           10. 响应式
+           ========================================================================== */
+        @media (max-width: 768px) {
+            .navbar { padding: 0 20px; }
+            .menu-toggle { display: flex; }
+
+            .nav-menu {
+                position: fixed;
+                top: 75px; left: 0; right: 0;
+                background: #FFFFFF;
+                flex-direction: column;
+                gap: 6px;
+                width: 100%;
+                padding: 16px;
+                border-bottom: 1px solid var(--border-color);
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-in-out;
+            }
+            .nav-menu.mobile-open { max-height: 420px; }
+            .nav-item { width: 100%; }
+            .nav-item a { display: block; text-align: center; }
+
+            .menu-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+            .menu-toggle.open span:nth-child(2) { opacity: 0; }
+            .menu-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
+            .about-split-container { flex-direction: column-reverse; gap: 32px; padding: 10px 0; }
+            .about-image-side { width: 100%; max-width: 280px; height: 380px; }
+            .about-title-black { font-size: 32px; text-align: center; }
+            .about-subtitle-purple { font-size: 18px; text-align: center; }
+            .cta-button-group { justify-content: center; }
+
+            .message-row { flex-direction: column; }
+            .message-send-btn { padding: 16px; }
+
+            .edu-layout, .exp-layout { display: flex; flex-direction: column; gap: 24px; }
+            .edu-timeline { flex: none; width: 100%; }
+            .exp-layout::before { display: none; }
+
+            .section-title { font-size: 24px; }
+            .section-subtitle { font-size: 15px; margin-bottom: 28px; }
+            .explorer-title { font-size: 38px; }
+            .card-header { flex-direction: column; align-items: flex-start; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-logo">KNOW ABOUT WANG LU</div>
+        <ul class="nav-menu" id="navMenu">
+            <li class="nav-item active" data-target="about"><a onclick="switchTab('about')">关于我</a></li>
+            <li class="nav-item" data-target="education"><a onclick="switchTab('education')">教育背景</a></li>
+            <li class="nav-item" data-target="experience"><a onclick="switchTab('experience')">实习经历</a></li>
+            <li class="nav-item" data-target="projects"><a onclick="switchTab('projects')">项目实践</a></li>
+            <li class="nav-item" data-target="explorer"><a onclick="switchTab('explorer')">Explorer</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+
+        <!-- 1. 关于我 -->
+        <section id="about" class="content-panel active-panel">
+            <div class="about-split-container">
+                <div class="about-text-side">
+                    <h1 class="about-title-black">Hi,&nbsp;我是王璐！</h1>
+                    <div class="about-subtitle-purple">Evolving into a Product Manager</div>
+                    <p class="about-brief">
+                        本硕金融&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspENTJ&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspCTRL拿捏者&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp白羊座<br>
+                        标签框不住我，在这里看见更多样的我！
+                    </p>
+                    <div class="cta-button-group">
+                        <a href="resume.pdf" download="王璐_产品经理简历.pdf" class="btn btn-primary">📥 下载简历</a>
+                        <button class="btn btn-secondary" onclick="openModal()">💬 联系我</button>
+                    </div>
+                </div>
+
+
+                <div class="about-image-side">
+                    <div class="profile-photo-container">
+                        <div class="photo-placeholder-text" id="avatarPlaceholder">
+                            📸 个人照片占位<br>
+                            <span style="font-size: 11px; font-weight: normal; color: #94A3B8;">(将 avatar.jpg/png 放在 image/ 目录)</span>
+                        </div>
+                        <img id="avatar" class="profile-img" alt="王璐的形象照">
+                    </div>
+                </div>
+            </div>
+
+            <div class="leave-message">
+                <div class="leave-message-title">留言板</div>
+                <form id="messageForm" class="message-row" onsubmit="return sendMessage(event)">
+                    <textarea
+                        id="messageInput"
+                        name="message"
+                        class="message-input"
+                        placeholder="留下想对我说的话"
+                        rows="2"
+                        required></textarea>
+                    <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+                    <button type="submit" id="messageSendBtn" class="message-send-btn">
+                        发送
+                    </button>
+                </form>
+                <p class="message-hint" id="messageHint">你的留言将发送到我的邮箱</p>
+            </div>
+        </section>
+
+        <!-- 2. 教育背景 -->
+        <section id="education" class="content-panel">
+            <h2 class="section-title">本硕金融的</h2>
+            <div class="section-subtitle">
+                学院派投资人
+            </div>
+
+            <div class="edu-layout">
+                <div class="edu-timeline">
+                    <div class="timeline-node">
+                        <span class="tn-year">2028</span>
+                        <span class="tn-period">硕士毕业</span>
+                    </div>
+                    <div class="timeline-node active-now">
+                        <span class="tn-year">2026</span>
+                        <span class="tn-period">本科毕业 · 读研</span>
+                    </div>
+                    <div class="timeline-node">
+                        <span class="tn-year">2022</span>
+                        <span class="tn-period">本科入学</span>
+                    </div>
+                </div>
+
+                <div class="edu-cards">
+                    <div class="edu-card morandi-green">
+                        <span class="edu-card-corner">2026.09 — 2028.06</span>
+                        <span class="edu-card-tag">硕士</span>
+                        <h3>上海财经大学</h3>
+                        <div class="edu-major">金融学院 · 金融分析师 · 保研</div>
+                        <div class="edu-detail">
+                            扎实的金融计量底座 × 创新视角下的商业理解，持续构建跨学科知识地图。
+                        </div>
+                    </div>
+
+                    <div class="edu-card morandi-purple">
+                        <span class="edu-card-corner">2022.09 — 2026.06</span>
+                        <span class="edu-card-tag">本科</span>
+                        <h3>上海大学</h3>
+                        <div class="edu-major">金融学 · Rank 1</div>
+                        <div class="edu-detail">
+                            上海市优秀毕业生 · 连续三年校特等奖学金 · 校优秀学生。
+                        </div>
+                        <div class="edu-thesis">
+                            毕业论文：跨尺度视野下的全球主要股票市场动态风险溢出研究
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. 实习经历 -->
+        <section id="experience" class="content-panel">
+            <h2 class="section-title">实习经历</h2>
+            <div class="section-subtitle">在不断的尝试中逐渐找到热爱</div>
+
+            <div class="exp-layout">
+                <div class="timeline-node active-now">
+                    <span class="tn-year">携程</span>
+                    <span class="tn-period">2025.12 — 2026.04</span>
+                </div>
+                <div class="card morandi-green">
+                    <div class="card-header">
+                        <h3>携程</h3>
+                        <span class="date-badge">2025.12 - 2026.04</span>
+                    </div>
+                    <p class="sub-txt">用户增长产品经理</p>
+                    <p class="biz-bg">
+                        <strong>业务背景：</strong>负责英区火车票新客增长，优化裂变产品矩阵和流量策略，提升获客效率，对支付新客数负责。
+                    </p>
+                    <ul class="desc-list">
+                        <li class="desc-item">
+                            <span class="highlight-badge badge-growth">策略探索</span>
+                            <strong>工具场景化获客：</strong>利用英区火车票卡工具场景形成差异化获客点，通过"工具价值+裂变补贴+续卡场景"组合拳锁定英区裂变新客，<strong>支付新客数 yoy +30%</strong>，对比公域投放<strong>获客成本降低 40%</strong>。
+                        </li>
+                        <li class="desc-item">
+                            <span class="highlight-badge badge-growth">玩法重构</span>
+                            <strong>互动玩法与裂变矩阵：</strong>独立负责迭代白盒激励玩法和行程地图等留存类游戏产品，A/B Test 验证动态奖励对裂变意愿的提升，<strong>K 值提升至 0.5</strong>。
+                        </li>
+                        <li class="desc-item">
+                            <span class="highlight-badge badge-growth">流量分配</span>
+                            <strong>流量分发优化：</strong>设计订后弹窗差异化分发策略，按用户生命周期与特征精准推送；打通 Deals 频道与核心活动页转化闭环，<strong>流量转化效率 +20%，自然拉新 +10%</strong>。
+                        </li>
+                        <li class="desc-item">
+                            <span class="highlight-badge badge-growth">数据基建</span>
+                            <strong>归因链路修复：</strong>针对跨端安装与延迟安装导致的 AID/SID 归因断裂，通过页面引导 + 后端埋点关联 + 归因优先级，<strong>归因精度 +43%，还原 30% 漏损新客</strong>。
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="timeline-node">
+                    <span class="tn-year">小红书</span>
+                    <span class="tn-period">2025.08 — 2025.12</span>
+                </div>
+                <div class="card morandi-purple">
+                    <div class="card-header">
+                        <h3>小红书</h3>
+                        <span class="date-badge">2025.08 - 2025.12</span>
+                    </div>
+                    <p class="sub-txt">产品经理</p>
+                    <p class="biz-bg">
+                        <strong>业务背景：</strong>通过定量数据与定性用户原声发现商家售后/申诉的产品卡点和提效机会，制定产品与策略方案。
+                    </p>
+                    <ul class="desc-list">
+                        <li class="desc-item">
+                            <span class="highlight-badge badge-pain">项目一</span>
+                            <strong>商家订单申诉流程线上化重构：</strong>原商家订单申诉依赖人工，求助率高、链路长，难以支撑业务规模扩张且整体体验较弱。<strong>负责申诉线上化产品方案</strong>，梳理客服/履约/治理/B 端 C 端端到端业务流，参与设计商家端线上申诉路径及自动化审核策略，抽象关键决策节点，引入自动化判责。<strong>商家自主申诉率 5% → 约 70%，单单均申诉耗时 -40%</strong>。
+                        </li>
+                        <li class="desc-item">
+                            <span class="highlight-badge badge-pain">项目二</span>
+                            <strong>商家售后体验优化：</strong>售后咨询占订单咨询约40%。基于咨询与申诉数据拆解高频场景，进行用户调研，完成下单/履约/售后全流程梳理，参与极速退款等核心售后能力的产品方案与规则评估，优化前端展示与交互。<strong>CPO -10%</strong>。
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="timeline-node">
+                    <span class="tn-year">得物</span>
+                    <span class="tn-period">2025.05 — 2025.08</span>
+                </div>
+                <div class="card morandi-blue">
+                    <div class="card-header">
+                        <h3>得物</h3>
+                        <span class="date-badge">2025.05 - 2025.08</span>
+                    </div>
+                    <p class="sub-txt">行业运营</p>
+                    <p class="biz-bg">
+                        <strong>业务背景：</strong>负责得物产业男装商圈的商家运营工作，通过商家运营、商家诊断、数据分析等动作辅助GMV目标和调性目标的推进。
+                    </p>
+                    <ul class="desc-list">
+                        <li class="desc-item">
+                            <span class="highlight-badge badge-growth">商家运营</span>
+                            </strong>基于商家分层体系，每周拉取重点商家 GMV、核心单品销售与流量转化数据，结合平台资源输出"一条神裤核心单品打爆优化方案"等可落地建议；负责"疯狂周末"蓝海赛道百万单品商家对接，记录卡点、协调审核与政策同步，<strong>活动单次报入率 50% → 70%</strong>。
+                        </li>
+                        <li class="desc-item">
+                            <span class="highlight-badge badge-growth">数据分析</span>
+                            </strong>用 SQL 提取商家全链路经营与投流数据，整合形成可视化看板，基于价格段引力数据为重点商家输出高潜价格带投放建议，推动 1 家重点商家调整投放结构，<strong>整体 ROI 2 → 3.39</strong>；负责 GTRG 品牌 Q3 卫衣销售预测，结合大盘销量、品牌历史转化率与搜索热度，输出库存备货建议。
+                        </li>
+                        <li class="desc-item">
+                            <span class="highlight-badge badge-growth">经营策略诊断</span>
+                            </strong>独立完成重点新商 NAICHA STUDIO 经营复盘，从 GMV 拆解、爆品运营、商业化投放、流量结构、品牌人群 5 大维度分析，总结"引力打爆""加强新风格赛道"2 大亮点；参与制定 H2 核心策略，形成<strong>新商破局经营手册</strong>，直接用于商家拜访会议并获得高度认可。
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. 项目实践 -->
+        <section id="projects" class="content-panel">
+            <h2 class="section-title">项目实践</h2>
+            <div class="section-subtitle">把对世界的好奇心落地为可量化的商业方案</div>
+
+            <div class="exp-layout">
+                <div class="timeline-node active-now">
+                    <span class="tn-year">市场调查</span>
+                    <span class="tn-period">2024.11 — 2025.05</span>
+                </div>
+                <div class="proj-row">
+                    <div class="card morandi-green">
+                        <div class="card-header">
+                            <h3>上海市药食同源滋补汤新品设计与营销方案</h3>
+                        </div>
+                        <p class="sub-txt">项目负责人 / 商业洞察者</p>
+                        <ul class="desc-list">
+                            <li class="desc-item">
+                                <span class="highlight-badge badge-pain">0-1 痛点</span>
+                                <strong>用户调研与痛点挖掘：</strong>将对生活养生场景的好奇转化为严谨的用户调研，发现核心痛点在于"口味与功效难以精准满足"，并拆解出高价、少选等阻碍转化的主要卡点。
+                            </li>
+                            <li class="desc-item">
+                                <span class="highlight-badge badge-pain">建模评估</span>
+                                <strong>跨界量化建模：</strong>引入层次分析法（AHP）与模糊综合评价法（FCE），对多元细分人群方案进行量化建模评估，<strong>输出 30+ 条高规格 PRD</strong> 明确产品定位。
+                            </li>
+                        </ul>
+                        <div class="skill-tag-container" style="margin-top: 18px;">
+                            <span class="skill-tag">用户调研</span>
+                            <span class="skill-tag">AHP&FCE方法</span>
+                            <span class="skill-tag">商业策略输出</span>
+                            <span class="skill-tag">商业化定位</span>
+                        </div>
+                    </div>
+                    <div class="proj-photo-wrap">
+                        <div class="proj-photo morandi-green">
+                            <img src="images/project-1.jpg" alt="药食同源项目">
+                            <a href="药食同源报告.pdf.pdf" download="药食同源报告.pdf" class="download-overlay">📥 点击下载报告</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node">
+                    <span class="tn-year">青年领导力项目</span>
+                    <span class="tn-period">2024.03 — 2024.05</span>
+                </div>
+                <div class="proj-row">
+                    <div class="card morandi-purple">
+                        <div class="card-header">
+                            <h3>沃顿商学院全球青年领导力项目</h3>
+                        </div>
+                        <p class="sub-txt">学院推荐</p>
+                        <ul class="desc-list">
+                            <li class="desc-item">
+                                <span class="highlight-badge badge-pain">商业治理</span>
+                                <strong>沃顿商学院 ARC 课程学习：</strong>系统学习商业治理框架与全球化视角下的战略思维。
+                            </li>
+                            <li class="desc-item">
+                                <span class="highlight-badge badge-pain">投资路演</span>
+                                <strong>策划并执行目标明确的投资路演：</strong>从行业研究到估值建模到 Pitch，完成一次完整的投资人沟通闭环。
+                            </li>
+                            <li class="desc-item">
+                                <span class="highlight-badge badge-pain">领导力</span>
+                                <strong>领导力培养建构：</strong>在跨文化团队协作中沉淀关于决策、表达与影响力的方法论。
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="proj-photo-wrap">
+                        <div class="proj-photo morandi-purple">
+                            <img src="images/project-2.jpg" alt="沃顿商学院项目">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node">
+                    <span class="tn-year">暑期学校 NUS</span>
+                    <span class="tn-period">2024.07 — 2024.08</span>
+                </div>
+                <div class="proj-row">
+                    <div class="card morandi-blue">
+                        <div class="card-header">
+                            <h3>新加坡国立大学暑期学校</h3>
+                        </div>
+                        <p class="sub-txt">研究助理（RA）</p>
+                        <ul class="desc-list">
+                            <li class="desc-item">
+                                <span class="highlight-badge badge-pain">研究方向</span>
+                                <strong>东盟经济与华裔发挥的作用：</strong>参与导师课题的资料整理、文献综述与数据梳理，理解东南亚区域经济格局中的多元角色，完成经济学学术研究。
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="proj-photo-wrap">
+                        <div class="proj-photo morandi-blue">
+                            <img src="images/project-3.jpg" alt="新加坡国立大学项目">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Explorer -->
+        <section id="explorer" class="content-panel">
+            <div class="explorer-header">
+                <div class="explorer-title">
+                    <span class="line-share">Share</span>
+                    <span class="line-life">Life &amp; Insights</span>
+                </div>
+                <div class="explorer-tagline">"Work hard, play hard"</div>
+            </div>
+
+            <div class="flip-grid">
+
+                <div class="flip-card" onclick="flipCard(this)">
+                    <div class="flip-card-inner">
+                        <div class="flip-face flip-front">
+                            <div class="flip-photo" style="background-image: url('images/explorer-1.jpg');"></div>
+                            <div class="flip-caption">English-leaner</div>
+                        </div>
+                        <div class="flip-face flip-back">
+                            <p>
+                                雅思 7.5 分，四六级均 600+。<br>
+                                语言不是精确的坐标系，而是步履不停的探险。<br>
+                                分数只是底色，它在职场里真正的名字，叫作"无界"。<br>
+                                我越过大西洋的季风，用另一种频率听懂了世界。<br>
+                                那些写在纸面上的数字，最终都变成了我肆意出逃、看清远方边界的底气。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="flipCard(this)">
+                    <div class="flip-card-inner">
+                        <div class="flip-face flip-front">
+                            <div class="flip-photo" style="background-image: url('images/explorer-2.jpg');"></div>
+                            <div class="flip-caption">地球探险家</div>
+                        </div>
+                        <div class="flip-face flip-back">
+                            <p>
+                                在旷野里扎根，<br>
+                                又在云端生长；<br>
+                                照片是我站在亚洲大陆的最南端！<br>
+                                愿我怀着对世界的好奇，<br>
+                                继续探索山川湖海。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="flipCard(this)">
+                    <div class="flip-card-inner">
+                        <div class="flip-face flip-front">
+                            <div class="flip-photo" style="background-image: url('images/explorer-3.jpg');"></div>
+                            <div class="flip-caption">观点输出者</div>
+                        </div>
+                        <div class="flip-face flip-back">
+                            <p>
+                                我开始在小红书上分享自己的观点和看法，<br>
+                                从竞赛、保研经历，到实习感悟，<br>
+                                有幸做到过单篇笔记浏览破万。<br>
+                                我希望每一次小小的分享，<br>
+                                都能像一束微光，<br>
+                                照亮和我一样的赶路人。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="flipCard(this)">
+                    <div class="flip-card-inner">
+                        <div class="flip-face flip-front">
+                            <div class="flip-photo" style="background-image: url('images/explorer-4.jpg');"></div>
+                            <div class="flip-caption">演唱会爱好者</div>
+                        </div>
+                        <div class="flip-face flip-back">
+                            <p>
+                                超级幸运没有依靠黄牛，<br>
+                                抢到过周杰伦和林俊杰演唱会的小姐姐一枚。<br>
+                                演唱会就像乌托邦，<br>
+                                短暂逃离纷繁世界，<br>
+                                让我沉浸在音乐的海洋中。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <div class="modal-overlay" id="contactModal" onclick="closeModalOutside(event)">
+        <div class="modal-card">
+            <button class="modal-close-btn" onclick="closeModal()" aria-label="关闭">×</button>
+            <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #000;">添加我的微信</h3>
+            <p style="font-size: 13px; color: var(--text-muted);">期待与你的交流</p>
+            <div class="qrcode-box">
+                <span>微信二维码占位</span>
+                <img src="images/wechat-qr.png" alt="微信二维码" onload="this.style.display='block'; this.previousElementSibling.style.display='none';">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab 切换
+        function switchTab(target) {
+            document.querySelectorAll('.nav-item').forEach(li => li.classList.remove('active'));
+            document.querySelector(`.nav-item[data-target="${target}"]`)?.classList.add('active');
+
+            document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active-panel'));
+            document.getElementById(target)?.classList.add('active-panel');
+
+            // 移动端关闭菜单
+            document.getElementById('navMenu')?.classList.remove('mobile-open');
+            document.getElementById('menuToggle')?.classList.remove('open');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 移动端菜单
+        document.getElementById('menuToggle')?.addEventListener('click', () => {
+            document.getElementById('navMenu').classList.toggle('mobile-open');
+            document.getElementById('menuToggle').classList.toggle('open');
+        });
+
+        // 联系我弹窗
+        function openModal() {
+            document.getElementById('contactModal').classList.add('modal-open');
+        }
+        function closeModal() {
+            document.getElementById('contactModal').classList.remove('modal-open');
+        }
+        function closeModalOutside(e) {
+            if (e.target.id === 'contactModal') closeModal();
+        }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+        // 翻转卡
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+
+        // 留言：通过 Formspree AJAX 提交（不离开页面）
+        // 使用前需在 https://formspree.io 注册账号，用邮箱 wl1540532382@163.com 创建一个 form，
+        // 拿到形如 https://formspree.io/f/xxxxxxxx 的 endpoint，替换下面的常量即可。
+        const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xykveqgv';
+
+        async function sendMessage(e) {
+            e.preventDefault();
+            const form = document.getElementById('messageForm');
+            const input = document.getElementById('messageInput');
+            const btn = document.getElementById('messageSendBtn');
+            const hint = document.getElementById('messageHint');
+
+            const content = (input.value || '').trim();
+            if (!content) {
+                input.focus();
+                input.style.borderColor = '#EF4444';
+                setTimeout(() => { input.style.borderColor = ''; }, 1200);
+                return false;
+            }
+
+            btn.disabled = true;
+            const originalText = btn.textContent;
+            btn.textContent = '发送中…';
+
+            try {
+                const res = await fetch(FORMSPREE_ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json' },
+                    body: new FormData(form)
+                });
+                if (res.ok) {
+                    input.value = '';
+                    hint.textContent = '✓ 留言已送达，谢谢你的分享';
+                    hint.style.color = '#16A34A';
+                    setTimeout(() => {
+                        hint.textContent = '你的留言将发送到我的邮箱';
+                        hint.style.color = '';
+                    }, 4000);
+                } else {
+                    throw new Error('Formspree response not ok');
+                }
+            } catch (err) {
+                hint.textContent = '发送失败，请稍后再试';
+                hint.style.color = '#EF4444';
+                setTimeout(() => {
+                    hint.textContent = '你的留言将发送到我的邮箱';
+                    hint.style.color = '';
+                }, 4000);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+            return false;
+        }
+
+        // 头像自动加载（avatar.jpg / png / jpeg）
+        (function tryLoadAvatar() {
+            const img = document.getElementById('avatar');
+            const placeholder = document.getElementById('avatarPlaceholder');
+            const candidates = [
+                'image/avatar.jpg', 'image/avatar.png', 'image/avatar.jpeg', 'image/avatar.webp',
+                'images/avatar.jpg', 'images/avatar.png', 'images/avatar.jpeg', 'images/avatar.webp',
+                'avatar.jpg', 'avatar.png', 'avatar.jpeg', 'avatar.webp'
+            ];
+            let i = 0;
+            function next() {
+                if (i >= candidates.length) return;
+                const test = new Image();
+                test.onload = () => {
+                    img.src = candidates[i];
+                    img.style.opacity = '1';
+                    if (placeholder) placeholder.style.display = 'none';
+                };
+                test.onerror = () => { i++; next(); };
+                test.src = candidates[i];
+            }
+            next();
+        })();
+    </script>
+
+</body>
+</html>
