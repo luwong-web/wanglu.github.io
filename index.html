@@ -154,7 +154,7 @@
 
         .about-brief {
             font-size: 18px;
-            color: #334155;
+            color: #000000;
             line-height: 1.85;
             margin-bottom: 50px;
         }
@@ -423,6 +423,23 @@
             font-size: 13px;
             color: rgba(15, 23, 42, 0.7);
             font-style: italic;
+        }
+
+        /* 教育背景板块：所有文字统一为纯黑 */
+        #education,
+        #education .section-title,
+        #education .section-subtitle,
+        #education .timeline-node,
+        #education .tn-year,
+        #education .tn-period,
+        #education .edu-card,
+        #education .edu-card h3,
+        #education .edu-card-tag,
+        #education .edu-card-corner,
+        #education .edu-major,
+        #education .edu-detail,
+        #education .edu-thesis {
+            color: #000000;
         }
 
         .edu-card-corner {
@@ -841,6 +858,14 @@
         }
         .flip-back p { font-style: italic; }
 
+        .flip-hint {
+            text-align: center;
+            font-size: 14px;
+            color: #94A3B8;
+            margin-top: 40px;
+            font-weight: 500;
+        }
+
         /* ==========================================================================
            10. 响应式
            ========================================================================== */
@@ -927,7 +952,7 @@
                             📸 个人照片占位<br>
                             <span style="font-size: 11px; font-weight: normal; color: #94A3B8;">(将 avatar.jpg/png 放在 image/ 目录)</span>
                         </div>
-                        <img id="avatar" class="profile-img" alt="王璐的形象照">
+                        <img id="avatar" class="profile-img" alt="王璐的形象照" width="340" height="460" decoding="async" fetchpriority="high">
                     </div>
                 </div>
             </div>
@@ -1009,7 +1034,7 @@
             <div class="exp-layout">
                 <div class="timeline-node active-now">
                     <span class="tn-year">携程</span>
-                    <span class="tn-period">2025.12 — 2026.04</span>
+                    <span class="tn-period">2026.03 — 2026.07</span>
                 </div>
                 <div class="card morandi-green">
                     <div class="card-header">
@@ -1042,7 +1067,7 @@
 
                 <div class="timeline-node">
                     <span class="tn-year">小红书</span>
-                    <span class="tn-period">2025.08 — 2025.12</span>
+                    <span class="tn-period">2025.10 — 2026.03</span>
                 </div>
                 <div class="card morandi-purple">
                     <div class="card-header">
@@ -1131,7 +1156,7 @@
                     </div>
                     <div class="proj-photo-wrap">
                         <div class="proj-photo morandi-green">
-                            <img src="images/project-1.jpg" alt="药食同源项目">
+                            <img src="images/project-1.jpg" alt="药食同源项目" loading="lazy" decoding="async" width="280" height="360">
                             <a href="药食同源报告.pdf.pdf" download="药食同源报告.pdf" class="download-overlay">📥 点击下载报告</a>
                         </div>
                     </div>
@@ -1164,7 +1189,7 @@
                     </div>
                     <div class="proj-photo-wrap">
                         <div class="proj-photo morandi-purple">
-                            <img src="images/project-2.jpg" alt="沃顿商学院项目">
+                            <img src="images/project-2.jpg" alt="沃顿商学院项目" loading="lazy" decoding="async" width="280" height="360">
                         </div>
                     </div>
                 </div>
@@ -1188,7 +1213,7 @@
                     </div>
                     <div class="proj-photo-wrap">
                         <div class="proj-photo morandi-blue">
-                            <img src="images/project-3.jpg" alt="新加坡国立大学项目">
+                            <img src="images/project-3.jpg" alt="新加坡国立大学项目" loading="lazy" decoding="async" width="280" height="360">
                         </div>
                     </div>
                 </div>
@@ -1210,7 +1235,7 @@
                 <div class="flip-card" onclick="flipCard(this)">
                     <div class="flip-card-inner">
                         <div class="flip-face flip-front">
-                            <div class="flip-photo" style="background-image: url('images/explorer-1.jpg');"></div>
+                            <div class="flip-photo" data-bg="images/explorer-1.jpg"></div>
                             <div class="flip-caption">English-leaner</div>
                         </div>
                         <div class="flip-face flip-back">
@@ -1228,7 +1253,7 @@
                 <div class="flip-card" onclick="flipCard(this)">
                     <div class="flip-card-inner">
                         <div class="flip-face flip-front">
-                            <div class="flip-photo" style="background-image: url('images/explorer-2.jpg');"></div>
+                            <div class="flip-photo" data-bg="images/explorer-2.jpg"></div>
                             <div class="flip-caption">地球探险家</div>
                         </div>
                         <div class="flip-face flip-back">
@@ -1246,7 +1271,7 @@
                 <div class="flip-card" onclick="flipCard(this)">
                     <div class="flip-card-inner">
                         <div class="flip-face flip-front">
-                            <div class="flip-photo" style="background-image: url('images/explorer-3.jpg');"></div>
+                            <div class="flip-photo" data-bg="images/explorer-3.jpg"></div>
                             <div class="flip-caption">观点输出者</div>
                         </div>
                         <div class="flip-face flip-back">
@@ -1265,7 +1290,7 @@
                 <div class="flip-card" onclick="flipCard(this)">
                     <div class="flip-card-inner">
                         <div class="flip-face flip-front">
-                            <div class="flip-photo" style="background-image: url('images/explorer-4.jpg');"></div>
+                            <div class="flip-photo" data-bg="images/explorer-4.jpg"></div>
                             <div class="flip-caption">演唱会爱好者</div>
                         </div>
                         <div class="flip-face flip-back">
@@ -1281,7 +1306,8 @@
                 </div>
 
             </div>
-        <div style="text-align: center; margin-top: 40px; font-size: 14px; color: #94A3B8; letter-spacing: 1px;">👆 点击图片去翻转</div>
+            
+            <div class="flip-hint">点击图片去翻转 👆</div>
         </section>
 
     </main>
@@ -1299,19 +1325,116 @@
     </div>
 
     <script>
+        // Tab 顺序
+        const TAB_ORDER = ['about', 'education', 'experience', 'projects', 'explorer'];
+
         // Tab 切换
-        function switchTab(target) {
+        function switchTab(target, scrollTo = 'top') {
             document.querySelectorAll('.nav-item').forEach(li => li.classList.remove('active'));
             document.querySelector(`.nav-item[data-target="${target}"]`)?.classList.add('active');
 
             document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active-panel'));
             document.getElementById(target)?.classList.add('active-panel');
 
+            // 懒加载：切到对应 tab 才加载图片背景
+            if (target === 'explorer') {
+                document.querySelectorAll('#explorer .flip-photo[data-bg]').forEach(el => {
+                    el.style.backgroundImage = `url('${el.dataset.bg}')`;
+                    el.removeAttribute('data-bg');
+                });
+            }
+
             // 移动端关闭菜单
             document.getElementById('navMenu')?.classList.remove('mobile-open');
             document.getElementById('menuToggle')?.classList.remove('open');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // 决定滚动位置：从上一 tab 滚上来时，落到当前 tab 底部；否则顶部
+            if (scrollTo === 'bottom') {
+                requestAnimationFrame(() => {
+                    window.scrollTo({
+                        top: document.documentElement.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                });
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         }
+
+        // ===== 滚动到底/到顶自动切 tab（温和版：需要在边界继续滑动一段距离才触发） =====
+        let scrollLock = false;
+        let edgeAccumDown = 0;   // 到底后继续下滑累计量
+        let edgeAccumUp = 0;     // 到顶后继续上滑累计量
+        let edgeResetTimer = null;
+        const EDGE_THRESHOLD = 260;   // 累计滑动多少像素才触发切换（越大越迟钝）
+        const EDGE_RESET_MS = 220;    // 停手多久后累计清零
+
+        function resetEdgeAccum() {
+            edgeAccumDown = 0;
+            edgeAccumUp = 0;
+        }
+        function scheduleEdgeReset() {
+            clearTimeout(edgeResetTimer);
+            edgeResetTimer = setTimeout(resetEdgeAccum, EDGE_RESET_MS);
+        }
+
+        function tryAdvanceTab(direction) {
+            if (scrollLock) return;
+            const currentTab = document.querySelector('.nav-item.active')?.dataset.target;
+            const idx = TAB_ORDER.indexOf(currentTab);
+            if (idx === -1) return;
+
+            if (direction === 'down' && idx < TAB_ORDER.length - 1) {
+                scrollLock = true;
+                resetEdgeAccum();
+                switchTab(TAB_ORDER[idx + 1], 'top');
+                setTimeout(() => { scrollLock = false; }, 1200);
+            } else if (direction === 'up' && idx > 0) {
+                scrollLock = true;
+                resetEdgeAccum();
+                switchTab(TAB_ORDER[idx - 1], 'bottom');
+                setTimeout(() => { scrollLock = false; }, 1200);
+            }
+        }
+
+        function atBottom() {
+            return window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+        }
+        function atTop() {
+            return window.scrollY <= 4;
+        }
+
+        // 桌面：滚轮
+        window.addEventListener('wheel', (e) => {
+            if (scrollLock) return;
+
+            if (e.deltaY > 0 && atBottom()) {
+                edgeAccumDown += e.deltaY;
+                edgeAccumUp = 0;
+                scheduleEdgeReset();
+                if (edgeAccumDown >= EDGE_THRESHOLD) tryAdvanceTab('down');
+            } else if (e.deltaY < 0 && atTop()) {
+                edgeAccumUp += -e.deltaY;
+                edgeAccumDown = 0;
+                scheduleEdgeReset();
+                if (edgeAccumUp >= EDGE_THRESHOLD) tryAdvanceTab('up');
+            } else {
+                resetEdgeAccum();
+            }
+        }, { passive: true });
+
+        // 移动端：触摸滑动（需要一次幅度较大的上/下滑）
+        let touchStartY = null;
+        window.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+        window.addEventListener('touchend', (e) => {
+            if (touchStartY === null || scrollLock) return;
+            const dy = touchStartY - (e.changedTouches[0]?.clientY ?? touchStartY);
+            if (dy > 140 && atBottom()) tryAdvanceTab('down');
+            else if (dy < -140 && atTop()) tryAdvanceTab('up');
+            touchStartY = null;
+        }, { passive: true });
 
         // 移动端菜单
         document.getElementById('menuToggle')?.addEventListener('click', () => {
